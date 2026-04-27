@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="note.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-sticky-note"></i>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your notes</p>
+            </div>
+            <form onsubmit="event.preventDefault(); login();">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" id="loginId" placeholder="Email or Mobile Number" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            <div class="login-footer">
+                <p>Demo: Enter any credentials to login</p>
+            </div>
+        </div>
+        <div class="login-decoration">
+            <div class="decoration-circle circle-1"></div>
+            <div class="decoration-circle circle-2"></div>
+            <div class="decoration-circle circle-3"></div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app" class="app-container hidden">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Notes App</span>
+                </div>
+                <div class="user-info">
+                    <span id="userGreeting">Hello, User!</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="home">
+                    <a href="#" onclick="showTab('home')">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="profile">
+                    <a href="#" onclick="showTab('profile')">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="history">
+                    <a href="#" onclick="showTab('history')">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="about">
+                    <a href="#" onclick="showTab('about')">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HOME TAB -->
+            <section id="home" class="tab-content active">
+                <div class="section-header">
+                    <h1><i class="fas fa-plus-circle"></i> Create Note</h1>
+                    <p>Capture your thoughts and ideas</p>
+                </div>
+                <div class="note-form-card">
+                    <div class="form-group">
+                        <label for="noteTitle">
+                            <i class="fas fa-heading"></i> Title
+                        </label>
+                        <input type="text" id="noteTitle" placeholder="Enter note title...">
+                    </div>
+                    <div class="form-group">
+                        <label for="noteContent">
+                            <i class="fas fa-align-left"></i> Content
+                        </label>
+                        <textarea id="noteContent" placeholder="Write your note here..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group color-picker">
+                            <label for="noteColor">
+                                <i class="fas fa-palette"></i> Color
+                            </label>
+                            <input type="color" id="noteColor" value="#fff3cd">
+                        </div>
+                        <button class="add-note-btn" onclick="addNote()">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Note</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="notes-grid" id="notes">
+                    <!-- Notes will be displayed here -->
+                </div>
+            </section>
+
+            <!-- PROFILE TAB -->
+            <section id="profile" class="tab-content">
+                <div class="section-header">
+                    <h1><i class="fas fa-user-circle"></i> Profile</h1>
+                    <p>Manage your personal information</p>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-avatar-section">
+                        <div class="avatar-container">
+                            <img id="avatar" src="assets/default-avatar.png" alt="Profile" class="profile-avatar" onerror="this.src='https://via.placeholder.com/150'">
+                            <label class="avatar-upload">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" onchange="uploadAvatar(event)" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label for="editName">
+                                <i class="fas fa-user"></i> Name
+                            </label>
+                            <input type="text" id="editName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob">
+                                    <i class="fas fa-calendar"></i> Date of Birth
+                                </label>
+                                <input type="date" id="dob">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">
+                                    <i class="fas fa-venus-mars"></i> Gender
+                                </label>
+                                <select id="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="save-btn" onclick="saveProfile()">
+                            <i class="fas fa-save"></i>
+                            <span>Save Profile</span>
+                        </button>
+                    </div>
+                    <div id="profileDisplay" class="profile-display"></div>
+                </div>
+            </section>
+
+            <!-- HISTORY TAB -->
+            <section id="history" class="tab-content">
+                <div class="section-header">
+                    <h1><i class="fas fa-history"></i> History</h1>
+                    <p>Track your activity log</p>
+                </div>
+                <div class="history-card">
+                    <ul id="historyList" class="history-list">
+                        <!-- History items will be displayed here -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ABOUT TAB -->
+            <section id="about" class="tab-content">
+                <div class="section-header">
+                    <h1><i class="fas fa-info-circle"></i> About</h1>
+                    <p>Learn more about our app</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-header">
+                        <div class="about-logo">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <h2>Notes App</h2>
+                        <p class="version">Version 1.0.0</p>
+                    </div>
+                    <div class="about-info">
+                        <div class="info-item">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <strong>Developer</strong>
+                                <span>Mr. Sumit Kumar (Leader)</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <strong>Mentor</strong>
+                                <span>Mr. Mudit</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <strong>Team Members</strong>
+                                <span>Umang Gupta, Anking Shrivastava, Aman, Nitin, Krishna</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-description">
+                        <p>A simple and elegant notes application with login functionality, profile management, and activity history tracking.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="note.js"></script>
+</body>
+
+</html>
